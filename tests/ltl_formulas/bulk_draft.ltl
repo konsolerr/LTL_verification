@@ -1,0 +1,8 @@
+(F a) || (F b) || (F c)
+(a || b)
+a || b
+a
+FALSE
+a || ! ( ! ( a || b) )
+G ((F (F x)) || (G y))
+F (a && b)
