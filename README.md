@@ -30,13 +30,15 @@ pip3 install -r requiremenets.txt
 ## Пример запуска программы и работы на автомате из примера
 
 ```
-$ cat tests/ltl_formulas/test1.ltl 
+$ cat tests/ltl_formulas/test1.ltl
 G (hal_init -> (X tim4_enable))
 G (pin_reset_s1 -> (X pin_reset_s2))
 G (pin_reset_s2 -> (X pin_reset_s3))
 G (hal_init -> (F tim4_enable))
 G (F prestart)
 G (sleep -> (F power_on))
+G (prestart -> (prestart U power_on))
+G ((power_on && chg) -> (power_on U flash))
 
 $ ./verification.py tests/automata/test1.xml tests/ltl_formulas/test1.ltl 
 Formula "G ((hal_init) -> (X (tim4_enable)))" is valid
@@ -61,19 +63,37 @@ Start:
 	pin_reset_s2 prestart tick
 	pin_reset_s3 prestart tick
 	delay_5000 prestart tick
+	power_on;
+Cycle:
+	power_on timer
+	sleep
+	interrupt sleep
+	power_on;
+---
+Formula "G ((sleep) -> (F (power_on)))" is valid
+---
+Formula "G ((prestart) -> ((prestart) U (power_on)))" is valid
+---
+Formula "G (((power_on) && (chg)) -> ((power_on) U (flash)))" is invalid, here goes the counter example :
+Start:
+	start
+	start tick
+	hal_init start tick
+	start tick tim4_enable
+	prestart
+	prestart tick
+	prestart shell_deinit tick
+	bq_deinit prestart tick
+	pin_reset_s1 prestart tick
+	pin_reset_s2 prestart tick
+	pin_reset_s3 prestart tick
+	delay_5000 prestart tick
 	power_on
-	chg power_on
+	chg power_on;
+Cycle:
 	cpu_on
 	chg cpu_on
 	bat_only
-	bat_only chg
-	cpu_on;
-Cycle:
-	chg cpu_on
-	bat_only
-	bat_only chg
-	cpu_on;
----
-Formula "G ((sleep) -> (F (power_on)))" is valid
+	bat_only chg;
 ---
 ```
