@@ -80,6 +80,15 @@ class ltlGrammarListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by ltlGrammarParser#Implication.
+    def enterImplication(self, ctx:ltlGrammarParser.ImplicationContext):
+        pass
+
+    # Exit a parse tree produced by ltlGrammarParser#Implication.
+    def exitImplication(self, ctx:ltlGrammarParser.ImplicationContext):
+        pass
+
+
     # Enter a parse tree produced by ltlGrammarParser#Global.
     def enterGlobal(self, ctx:ltlGrammarParser.GlobalContext):
         pass

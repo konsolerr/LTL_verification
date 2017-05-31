@@ -12,6 +12,9 @@ formula : '(' formula ')' # Brackets
     | BoolConst           # Bool
     | formula '&&' formula # And
     | formula '||' formula # Or
+    | formula '->' formula # Implication
+//    | formula '~' formula # Equivalence
+//    | formula '+' formula # Xor
     | '!' formula         # Not
     | 'X' formula         # Next
     | 'F' formula         # Future

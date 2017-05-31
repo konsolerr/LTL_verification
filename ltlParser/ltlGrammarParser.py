@@ -7,22 +7,23 @@ import sys
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\17")
-        buf.write("\'\4\2\t\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20")
+        buf.write("*\4\2\t\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2")
         buf.write("\3\2\3\2\3\2\3\2\5\2\24\n\2\3\2\3\2\3\2\3\2\3\2\3\2\3")
-        buf.write("\2\3\2\3\2\3\2\3\2\3\2\7\2\"\n\2\f\2\16\2%\13\2\3\2\2")
-        buf.write("\3\2\3\2\2\2\2/\2\23\3\2\2\2\4\5\b\2\1\2\5\6\7\3\2\2\6")
-        buf.write("\7\5\2\2\2\7\b\7\4\2\2\b\24\3\2\2\2\t\24\7\16\2\2\n\24")
-        buf.write("\7\r\2\2\13\f\7\7\2\2\f\24\5\2\2\b\r\16\7\b\2\2\16\24")
-        buf.write("\5\2\2\7\17\20\7\t\2\2\20\24\5\2\2\6\21\22\7\n\2\2\22")
-        buf.write("\24\5\2\2\5\23\4\3\2\2\2\23\t\3\2\2\2\23\n\3\2\2\2\23")
-        buf.write("\13\3\2\2\2\23\r\3\2\2\2\23\17\3\2\2\2\23\21\3\2\2\2\24")
-        buf.write("#\3\2\2\2\25\26\f\n\2\2\26\27\7\5\2\2\27\"\5\2\2\13\30")
-        buf.write("\31\f\t\2\2\31\32\7\6\2\2\32\"\5\2\2\n\33\34\f\4\2\2\34")
-        buf.write("\35\7\13\2\2\35\"\5\2\2\5\36\37\f\3\2\2\37 \7\f\2\2 \"")
-        buf.write("\5\2\2\4!\25\3\2\2\2!\30\3\2\2\2!\33\3\2\2\2!\36\3\2\2")
-        buf.write("\2\"%\3\2\2\2#!\3\2\2\2#$\3\2\2\2$\3\3\2\2\2%#\3\2\2\2")
-        buf.write("\5\23!#")
+        buf.write("\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\7\2%\n\2\f\2\16\2(")
+        buf.write("\13\2\3\2\2\3\2\3\2\2\2\2\63\2\23\3\2\2\2\4\5\b\2\1\2")
+        buf.write("\5\6\7\3\2\2\6\7\5\2\2\2\7\b\7\4\2\2\b\24\3\2\2\2\t\24")
+        buf.write("\7\17\2\2\n\24\7\16\2\2\13\f\7\b\2\2\f\24\5\2\2\b\r\16")
+        buf.write("\7\t\2\2\16\24\5\2\2\7\17\20\7\n\2\2\20\24\5\2\2\6\21")
+        buf.write("\22\7\13\2\2\22\24\5\2\2\5\23\4\3\2\2\2\23\t\3\2\2\2\23")
+        buf.write("\n\3\2\2\2\23\13\3\2\2\2\23\r\3\2\2\2\23\17\3\2\2\2\23")
+        buf.write("\21\3\2\2\2\24&\3\2\2\2\25\26\f\13\2\2\26\27\7\5\2\2\27")
+        buf.write("%\5\2\2\f\30\31\f\n\2\2\31\32\7\6\2\2\32%\5\2\2\13\33")
+        buf.write("\34\f\t\2\2\34\35\7\7\2\2\35%\5\2\2\n\36\37\f\4\2\2\37")
+        buf.write(" \7\f\2\2 %\5\2\2\5!\"\f\3\2\2\"#\7\r\2\2#%\5\2\2\4$\25")
+        buf.write("\3\2\2\2$\30\3\2\2\2$\33\3\2\2\2$\36\3\2\2\2$!\3\2\2\2")
+        buf.write("%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2\'\3\3\2\2\2(&\3\2\2\2")
+        buf.write("\5\23$&")
         return buf.getvalue()
 
 
@@ -36,13 +37,13 @@ class ltlGrammarParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "'('", "')'", "'&&'", "'||'", "'!'", "'X'", 
-                     "'F'", "'G'", "'U'", "'R'" ]
+    literalNames = [ "<INVALID>", "'('", "')'", "'&&'", "'||'", "'->'", 
+                     "'!'", "'X'", "'F'", "'G'", "'U'", "'R'" ]
 
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                      "<INVALID>", "<INVALID>", "<INVALID>", "BoolConst", 
-                      "ID", "WS" ]
+                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                      "BoolConst", "ID", "WS" ]
 
     RULE_formula = 0
 
@@ -59,9 +60,10 @@ class ltlGrammarParser ( Parser ):
     T__7=8
     T__8=9
     T__9=10
-    BoolConst=11
-    ID=12
-    WS=13
+    T__10=11
+    BoolConst=12
+    ID=13
+    WS=14
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -242,6 +244,28 @@ class ltlGrammarParser ( Parser ):
                 listener.exitFuture(self)
 
 
+    class ImplicationContext(FormulaContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a ltlGrammarParser.FormulaContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def formula(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(ltlGrammarParser.FormulaContext)
+            else:
+                return self.getTypedRuleContext(ltlGrammarParser.FormulaContext,i)
+
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterImplication" ):
+                listener.enterImplication(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitImplication" ):
+                listener.exitImplication(self)
+
+
     class GlobalContext(FormulaContext):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a ltlGrammarParser.FormulaContext
@@ -344,39 +368,39 @@ class ltlGrammarParser ( Parser ):
                 self.state = 8
                 self.match(ltlGrammarParser.BoolConst)
                 pass
-            elif token in [ltlGrammarParser.T__4]:
+            elif token in [ltlGrammarParser.T__5]:
                 localctx = ltlGrammarParser.NotContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
                 self.state = 9
-                self.match(ltlGrammarParser.T__4)
+                self.match(ltlGrammarParser.T__5)
                 self.state = 10
                 self.formula(6)
                 pass
-            elif token in [ltlGrammarParser.T__5]:
+            elif token in [ltlGrammarParser.T__6]:
                 localctx = ltlGrammarParser.NextContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
                 self.state = 11
-                self.match(ltlGrammarParser.T__5)
+                self.match(ltlGrammarParser.T__6)
                 self.state = 12
                 self.formula(5)
                 pass
-            elif token in [ltlGrammarParser.T__6]:
+            elif token in [ltlGrammarParser.T__7]:
                 localctx = ltlGrammarParser.FutureContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
                 self.state = 13
-                self.match(ltlGrammarParser.T__6)
+                self.match(ltlGrammarParser.T__7)
                 self.state = 14
                 self.formula(4)
                 pass
-            elif token in [ltlGrammarParser.T__7]:
+            elif token in [ltlGrammarParser.T__8]:
                 localctx = ltlGrammarParser.GlobalContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
                 self.state = 15
-                self.match(ltlGrammarParser.T__7)
+                self.match(ltlGrammarParser.T__8)
                 self.state = 16
                 self.formula(3)
                 pass
@@ -384,7 +408,7 @@ class ltlGrammarParser ( Parser ):
                 raise NoViableAltException(self)
 
             self._ctx.stop = self._input.LT(-1)
-            self.state = 33
+            self.state = 36
             self._errHandler.sync(self)
             _alt = self._interp.adaptivePredict(self._input,2,self._ctx)
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -392,63 +416,76 @@ class ltlGrammarParser ( Parser ):
                     if self._parseListeners is not None:
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
-                    self.state = 31
+                    self.state = 34
                     self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,1,self._ctx)
                     if la_ == 1:
                         localctx = ltlGrammarParser.AndContext(self, ltlGrammarParser.FormulaContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_formula)
                         self.state = 19
-                        if not self.precpred(self._ctx, 8):
+                        if not self.precpred(self._ctx, 9):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 8)")
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 9)")
                         self.state = 20
                         self.match(ltlGrammarParser.T__2)
                         self.state = 21
-                        self.formula(9)
+                        self.formula(10)
                         pass
 
                     elif la_ == 2:
                         localctx = ltlGrammarParser.OrContext(self, ltlGrammarParser.FormulaContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_formula)
                         self.state = 22
-                        if not self.precpred(self._ctx, 7):
+                        if not self.precpred(self._ctx, 8):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 7)")
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 8)")
                         self.state = 23
                         self.match(ltlGrammarParser.T__3)
                         self.state = 24
-                        self.formula(8)
+                        self.formula(9)
                         pass
 
                     elif la_ == 3:
-                        localctx = ltlGrammarParser.UntilContext(self, ltlGrammarParser.FormulaContext(self, _parentctx, _parentState))
+                        localctx = ltlGrammarParser.ImplicationContext(self, ltlGrammarParser.FormulaContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_formula)
                         self.state = 25
-                        if not self.precpred(self._ctx, 2):
+                        if not self.precpred(self._ctx, 7):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 7)")
                         self.state = 26
-                        self.match(ltlGrammarParser.T__8)
+                        self.match(ltlGrammarParser.T__4)
                         self.state = 27
-                        self.formula(3)
+                        self.formula(8)
                         pass
 
                     elif la_ == 4:
-                        localctx = ltlGrammarParser.ReleaseContext(self, ltlGrammarParser.FormulaContext(self, _parentctx, _parentState))
+                        localctx = ltlGrammarParser.UntilContext(self, ltlGrammarParser.FormulaContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_formula)
                         self.state = 28
-                        if not self.precpred(self._ctx, 1):
+                        if not self.precpred(self._ctx, 2):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 1)")
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
                         self.state = 29
                         self.match(ltlGrammarParser.T__9)
                         self.state = 30
+                        self.formula(3)
+                        pass
+
+                    elif la_ == 5:
+                        localctx = ltlGrammarParser.ReleaseContext(self, ltlGrammarParser.FormulaContext(self, _parentctx, _parentState))
+                        self.pushNewRecursionContext(localctx, _startState, self.RULE_formula)
+                        self.state = 31
+                        if not self.precpred(self._ctx, 1):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 1)")
+                        self.state = 32
+                        self.match(ltlGrammarParser.T__10)
+                        self.state = 33
                         self.formula(2)
                         pass
 
              
-                self.state = 35
+                self.state = 38
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,2,self._ctx)
 
@@ -474,18 +511,22 @@ class ltlGrammarParser ( Parser ):
 
     def formula_sempred(self, localctx:FormulaContext, predIndex:int):
             if predIndex == 0:
-                return self.precpred(self._ctx, 8)
+                return self.precpred(self._ctx, 9)
          
 
             if predIndex == 1:
-                return self.precpred(self._ctx, 7)
+                return self.precpred(self._ctx, 8)
          
 
             if predIndex == 2:
-                return self.precpred(self._ctx, 2)
+                return self.precpred(self._ctx, 7)
          
 
             if predIndex == 3:
+                return self.precpred(self._ctx, 2)
+         
+
+            if predIndex == 4:
                 return self.precpred(self._ctx, 1)
          
 

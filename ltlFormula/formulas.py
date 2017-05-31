@@ -1,6 +1,6 @@
 from antlr4 import *
-from LTL_parser.ltlGrammarLexer import ltlGrammarLexer
-from LTL_parser.ltlGrammarParser import ltlGrammarParser
+from ltlParser.ltlGrammarLexer import ltlGrammarLexer
+from ltlParser.ltlGrammarParser import ltlGrammarParser
 
 
 class Formula(object):
@@ -11,15 +11,6 @@ class Formula(object):
 
     def get_text(self):
         raise NotImplemented
-
-
-    # def __init__(self, line):
-    #     data = InputStream(line)
-    #     lexer = ltlGrammarLexer(data)
-    #     stream = CommonTokenStream(lexer)
-    #     parser = ltlGrammarParser(stream)
-    #     self.tree = parser.formula()
-    #     self.text = line
 
     @classmethod
     def _parse_context(cls, context):
@@ -54,6 +45,12 @@ class Formula(object):
                 Formula._parse_context(context.children[2])
             )
 
+        if context.__class__.__name__ == "ImplicationContext":
+            return ImplicationFormula(
+                Formula._parse_context(context.children[0]),
+                Formula._parse_context(context.children[2])
+            )
+
         if context.__class__.__name__ == "OrContext":
             return OrFormula(
                 Formula._parse_context(context.children[0]),
@@ -73,7 +70,11 @@ class Formula(object):
             )
 
 
-
+    def get_closure(self):
+        closure = {Formula.TRUE, Formula.FALSE, self, self.negative_propagation()}
+        for child in self.children:
+            closure = closure | child.get_closure()
+        return closure
 
 
     @classmethod
@@ -121,8 +122,11 @@ class Formula(object):
 
         return self
 
-    def normal_form(self):
-        tree = self.negative_propagation()
+    def normal_form(self, negation=False):
+        if negation:
+            tree = self.negative_propagation()
+        else:
+            tree = self.negative_check()
         tree_norm = tree.normality()
         return tree_norm
 
@@ -135,6 +139,11 @@ class Formula(object):
         eqs = [child == other.children[i] for i, child in enumerate(self.children)]
         return all(eqs)
 
+    def get_ap(self):
+        aps = set()
+        for child in self.children:
+            aps = aps | child.get_ap()
+        return aps
 
 
 class TerminalFormula(Formula):
@@ -168,6 +177,9 @@ class ConstFormula(TerminalFormula):
             return False
         return self.value == other.value
 
+    def get_closure(self):
+        return {Formula.TRUE, Formula.FALSE}
+
 
 class PropFormula(TerminalFormula):
     def __init__(self, name: str, *args):
@@ -195,6 +207,12 @@ class PropFormula(TerminalFormula):
         if type(self) != type(other):
             return False
         return self.name == other.name
+
+    def get_ap(self):
+        return {self}
+
+    def get_closure(self):
+        return {self, self.negative_propagation()}
 
 
 class NotFormula(Formula):
@@ -234,6 +252,27 @@ class AndFormula(Formula):
             )
         return self.text
 
+
+class ImplicationFormula(Formula):
+    def negative_propagation(self):
+        return AndFormula(
+            self.children[0].negative_check(),
+            self.children[1].negative_propagation()
+        )
+
+    def negative_check(self):
+        return OrFormula(
+            self.children[0].negative_propogation(),
+            self.children[1].negative_check()
+        )
+
+    def get_text(self):
+        if self.text is None:
+            self.text = "({}) -> ({})".format(
+                self.children[0].get_text(),
+                self.children[1].get_text()
+            )
+        return self.text
 
 class OrFormula(Formula):
     def negative_propagation(self):
@@ -339,35 +378,16 @@ class UntilFormula(Formula):
             )
         return self.text
 
+Formula.TRUE = Formula.from_string("TRUE")
+Formula.FALSE = Formula.from_string("FALSE")
 
-class FormulaSet(object):
-    def __init__(self, *args):
-        self.formulas = set()
-        for arg in args:
-            self.formulas.add(arg)
 
-    def add_formula(self, formula: Formula):
-        self.formulas.add(formula)
-
-    def __len__(self):
-        return len(self.formulas)
-
-    def __iter__(self):
-        return iter(self.formulas)
-
-    def is_empty(self):
-        return len(self) == 0
-
-    @classmethod
-    def from_filename(cls, file_name: str):
-        formula_set = FormulaSet()
-        with open(file_name, "r") as f:
-            lines = f.readlines()
-            for line in lines:
-                line = line.strip()
-                f = Formula.from_string(line)
-                formula_set.add_formula(f)
-        return formula_set
-
-    def __eq__(self, other):
-        return self.formulas == other.formulas
+def get_formulas_from_file(file_name: str):
+    formulas = []
+    with open(file_name, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            line = line.strip()
+            f = Formula.from_string(line)
+            formulas.append(f)
+    return formulas
