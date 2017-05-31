@@ -27,63 +27,53 @@ pip3 install -r requiremenets.txt
 
 Формат простой: каждая строка файла -- отдельная формула, которая должна быть проверена. Формулы поддерживают следующие операции: "&&", "||", "->", "!", "X", "F", "G", "U", "R", идентификаторы пропозициональных переменных должны быть в lowercase. Все именя состояний, событий и выходный воздействий начального автомата приводятся в lowercase.
 
-## Пример работы и запуска
+## Пример запуска программы и работы на автомате из примера
 
 ```
-$ ./verification.py tests/automata/test0.xml tests/ltl_formulas/test0.ltl 
-Formula "F (c)" is invalid, here goes the counter example :
-Start:
-;
-Cycle:
-	start
-	go start
-	a
-	a go
-	b
-	b skip;
+$ cat tests/ltl_formulas/test1.ltl 
+G (hal_init -> (X tim4_enable))
+G (pin_reset_s1 -> (X pin_reset_s2))
+G (pin_reset_s2 -> (X pin_reset_s3))
+G (hal_init -> (F tim4_enable))
+G (F prestart)
+G (sleep -> (F power_on))
+
+$ ./verification.py tests/automata/test1.xml tests/ltl_formulas/test1.ltl 
+Formula "G ((hal_init) -> (X (tim4_enable)))" is valid
 ---
-Formula "G (((a) && (go)) -> (X (b)))" is valid
+Formula "G ((pin_reset_s1) -> (X (pin_reset_s2)))" is valid
 ---
-Formula "F (start)" is valid
+Formula "G ((pin_reset_s2) -> (X (pin_reset_s3)))" is valid
 ---
-Formula "F (a)" is invalid, here goes the counter example :
-Start:
-;
-Cycle:
-	start
-	back start
-	c
-	c go;
+Formula "G ((hal_init) -> (F (tim4_enable)))" is valid
 ---
-Formula "F (b)" is invalid, here goes the counter example :
-Start:
-;
-Cycle:
-	start
-	back start
-	c
-	c go;
----
-Formula "G ((a) -> (F (b)))" is valid
----
-Formula "a" has not temporal operator from (U, F, G, R). 
-So nothing to verify really
----
-Formula "G (F (c))" is invalid, here goes the counter example :
+Formula "G (F (prestart))" is invalid, here goes the counter example :
 Start:
 	start
-	go start
-	a
-	a go
-	b
-	b skip
-	start;
+	start tick
+	hal_init start tick
+	start tick tim4_enable
+	prestart
+	prestart tick
+	prestart shell_deinit tick
+	bq_deinit prestart tick
+	pin_reset_s1 prestart tick
+	pin_reset_s2 prestart tick
+	pin_reset_s3 prestart tick
+	delay_5000 prestart tick
+	power_on
+	chg power_on
+	cpu_on
+	chg cpu_on
+	bat_only
+	bat_only chg
+	cpu_on;
 Cycle:
-	go start
-	a
-	a go
-	b
-	b skip
-	start;
+	chg cpu_on
+	bat_only
+	bat_only chg
+	cpu_on;
+---
+Formula "G ((sleep) -> (F (power_on)))" is valid
 ---
 ```
