@@ -35,6 +35,7 @@ def automaton_to_buchi(automaton):
     aps.extend(map(lambda x: x.lower(), automaton.events))
     for k, v in automaton.transitions.items():
         for action in v.actions:
+            # print(action.name.lower())
             aps.append(action.name.lower())
 
     aps = set(map(lambda x: PropFormula(x), aps))
@@ -48,6 +49,7 @@ def automaton_to_buchi(automaton):
         default[frozenset(edge)] = default.get(frozenset(edge), [])
         default[frozenset(edge)].append(b)
         delta[a] = default
+
 
     for k, dnode in nodes.items():
         add_edge(dnode[0], dnode[1], {PropFormula(dnode[1].name)})
@@ -85,6 +87,10 @@ def automaton_to_buchi(automaton):
             add_edge(last, new_nodes[i], edge)
             last = new_nodes[i]
 
+    for i, node2 in nodes.items():
+        for node in node2:
+            if node not in delta:
+                delta[node] = {}
 
     nodes_total = set()
     for k, v in nodes.items():
